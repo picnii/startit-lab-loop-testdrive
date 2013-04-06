@@ -1,0 +1,158 @@
+<html ng-app>
+<head>
+	<meta charset="utf-8"/>
+	<script type="text/javascript" src="lib/jquery.js"></script>
+	<script type="text/javascript" src="lib/angular.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.js"></script>
+	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" type="text/css" />
+	<script type="text/javascript" src="spec/LabData.js"></script>
+	<script type="text/javascript">
+		function MainController($scope)
+		{
+			$scope.FULLSCREEN = '', $scope.LABSCREEN = 'labscreen', $scope.TABLET = 'tablet', $scope.SMALLTABLET = 'smalltablet', $scope.IPHONE5 = 'iphone5', $scope.MOBILE = 'mobile';
+			$scope.lab = window.labdata;
+			$scope.appMode = $scope.LABSCREEN;
+			for(var i = 0 ; i < $scope.lab.steps.length ; i++)
+			{
+				$scope.lab.steps[i].id = i;
+			}
+
+			$scope.showButton = function(mode)
+			{
+				$scope.appMode = mode;
+					
+			}
+
+			$scope.reTest = function()
+			{
+				var iframeHtml ="<iframe  src=\"SpecRunner.html\"></iframe>";
+				$('#spec-main iframe').remove();
+				$('#spec-main').append(iframeHtml);
+			}
+		}
+	</script>
+</head>
+<body ng-controller="MainController">
+	<div class="container">
+		<!-- MENU -->
+		<div class="navbar">
+		  <div class="navbar-inner">
+		    <a class="brand" href="#">{{lab.name}}</a>
+		    <ul class="nav nav-tabs">
+		      <li class="active"><a href="#lab-main" data-toggle="tab">Lab</a></li>
+		      <li><a href="#app-main" data-toggle="tab">App</a></li>
+		      <li><a href="#spec-main" data-toggle="tab">Test</a></li>
+		    </ul>
+		  </div>
+		</div>
+		<!-- -->
+		<div class="inner">
+			<div class="tab-content">
+			  <div class="tab-pane active" id="lab-main">
+			  			
+			  			<div class="accordion" id="accordion2">
+						  <div ng-repeat="step in lab.steps" class="accordion-group">
+						    <div class="accordion-heading">
+						      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{step.id}}">
+						        {{step.name}}
+						      </a>
+						    </div>
+						    <div id="collapse{{step.id}}" class="accordion-body collapse" ng-class="step.class">
+						      <div class="accordion-inner">
+						        {{step.content}}
+
+						        <pre>{{step.code}}</pre>
+						      </div>
+						    </div>
+						  </div>
+
+						</div>
+
+			  </div>
+			  <div class="tab-pane" id="app-main">Show App in different size<br/>
+			  	<div class="btn-group">
+				  <a class="btn" href="index.html" target="_blank">Full Screen</a>
+				  <button class="btn" ng-click="showButton(LABSCREEN);">900 x 900</button>
+				  <button class="btn" ng-click="showButton(TABLET);">Tablet</button>
+				  <button class="btn" ng-click="showButton(SMALLTABLET);">Small Tablet</button>
+				  <button class="btn" ng-click="showButton(IPHONE5);">iPhone5</button>
+				  <button class="btn" ng-click="showButton(MOBILE);">Mobile</button>
+
+				</div>
+				<div class="inner" ng-class="appMode">
+			  		<iframe src="index.html" ng-class="appMode"></iframe>
+			  	</div>
+
+			  </div>
+			  <div class="tab-pane" id="spec-main">
+			  		<div style="text-align:right;">
+			  			<a href="SpecRunner.html" target="_blank" class="btn btn-primary">Full Window</a>
+			  			<button class="btn btn-danger" ng-click="reTest();">Re Test</button>
+			  		</div>
+			  		<div style="height:10px;"></div>
+			  		<iframe  src="SpecRunner.html"></iframe>
+			  </div>
+			  
+			</div>
+
+
+		</div>
+	</div>
+	<style type="text/css">
+		body{
+			background: #333;
+		}
+
+		body > .container > .inner
+		{
+			padding:5px;
+			background: white;
+			border-radius: 5px;
+		}
+
+		 #app-main > .inner
+		{
+			background: black;
+			padding:5px;
+			border-radius: 5px;
+		}
+
+		 #app-main iframe.labscreen,  #app-main .inner.labscreen
+		{
+			width:900px;
+			height: 900px;
+		}
+
+		 #app-main iframe.tablet,  #app-main .inner.tablet
+		{
+			width:768px;
+			height: 1024px;
+		}
+
+		 #app-main iframe.smalltablet,  #app-main .inner.smalltablet
+		{
+			width:600px;
+			height: 800px;
+		}		
+
+		 #app-main iframe.iphone5,  #app-main .inner.iphone5
+		{
+			width:320px;
+			height: 568px;
+		}
+
+		 #app-main iframe.mobile,  #app-main .inner.mobile
+		{
+			width:320px;
+			height: 400px;
+		}
+
+		#spec-main iframe, #app-main iframe
+		{
+			border:none;
+			width:940px;
+			height:600px;
+		}
+
+	</style>
+</body>

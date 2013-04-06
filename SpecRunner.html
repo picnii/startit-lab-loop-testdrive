@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Jasmine Spec Runner</title>
+  <meta charset="utf-8"/>
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.3.1/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
+  <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+
+  
+  <script type="text/javascript" src="lib/jquery.js" ></script>
+  <script type="text/javascript" src="lib/picnii-interactive.js" ></script>
+  <script type="text/javascript" src="lib/bootstrap/js/bootstrap.js" ></script>
+
+
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="src/main.js"></script>
+
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="spec/MainSpec.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+
+    //add on
+    $(document).ready(function(){
+      $('#output-result').hide();
+    });
+  </script>
+
+</head>
+
+<body>
+  <button onclick="$('#output-result').toggle()">Hide/Show Result</button>
+  <div id="output-result" class="container" style="margin-top:20px;">
+    <div id="input-structure">
+            <div id="input" style="display:none;">
+              <div id="input-a">
+                <form onsubmit="onSubmit(); return false;">
+                  <input style="height:23px" id="input-text" placeholder="Type your input here" type="text"></input>        
+                  <button class="btn" id="submit" >Submit</button>
+                </form>
+                <script type="text/javascript">
+                  $(document).ready(function(){
+                    $('#input-a form').submit(function(evt){
+                      evt.stopPropagation() ;
+                      return false;
+                    })
+                  })
+                </script>
+              </div>
+              <div id="input-b" style="display:none">       
+                <button type="button" class="btn" id="buttonA" onclick="onSubmitA()" value="A" >A</button>
+              </div>
+            </div>
+          </div>
+
+    <div id="output">
+
+    </div>
+  </div>
+</body>
+</html>
